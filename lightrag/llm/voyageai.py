@@ -39,7 +39,7 @@ async def voyageai_embed(
     api_key: str | None = None,
     embedding_dim: int | None = None,
     input_type: str | None = None,
-    truncation: bool | None = None,
+    truncation: bool = True,
 ) -> np.ndarray:
     """Generate embeddings for a list of texts using VoyageAI's API.
 
@@ -53,11 +53,14 @@ async def voyageai_embed(
             - "voyage-law-2": Legal documents (1024 dims, 16K context)
             - "voyage-finance-2": Finance (1024 dims, 32K context)
         api_key: Optional VoyageAI API key. If None, uses VOYAGEAI_API_KEY environment variable.
+        embedding_dim: Optional embedding dimension. If provided, will request specific dimension from API.
         input_type: Optional input type hint for the model. Options:
             - "query": For search queries
             - "document": For documents to be indexed
             - None: Let the model decide (default)
-        truncation: Whether to truncate texts that exceed token limit (default: None).
+        truncation: Whether to truncate texts that exceed token limit (default: True).
+            When True, texts exceeding max_token_size will be automatically truncated.
+            When False, API will raise an error for texts exceeding the limit.
 
     Returns:
         A numpy array of embeddings, one per input text.
